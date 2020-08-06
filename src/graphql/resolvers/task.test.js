@@ -32,7 +32,7 @@ describe('tasks', () => {
     mockingoose(Task).reset();
   });
 
-  it('I should get all tasks', async () => {
+  it('should get all tasks', async () => {
     mockingoose(Task).toReturn(mockedTasks, 'find');
     const tasks = await task.tasks({ excludeCompleted: false });
     expect(tasks.length).toBe(3);
@@ -43,7 +43,7 @@ describe('tasks', () => {
     expect(typeof tasks[0].updatedAt).toBe('string');
   });
 
-  it('I should get one task', async () => {
+  it('should get one task', async () => {
     mockingoose(Task).toReturn(mockedTasks[1], 'findOne');
     const atask = await task.task({ id: '5f2bead943c1e70919517cad' });
     expect(atask._id).toBe('5f2bead943c1e70919517cad');
@@ -53,7 +53,7 @@ describe('tasks', () => {
     expect(typeof atask.updatedAt).toBe('string');
   });
 
-  it('I should get error if task do not exist', async () => {
+  it('should get error if task do not exist', async () => {
     mockingoose(Task).toReturn(mockedTasks[1], 'findX');
     let errorMessage = '';
     try {
@@ -63,5 +63,51 @@ describe('tasks', () => {
     }
 
     expect(errorMessage).toBe('Task not found!');
+  });
+
+  it('should update task', async () => {
+    const newTask = {
+      ...mockedTasks[2],
+      summary: 'New summary'
+    };
+    mockingoose(Task).toReturn(mockedTasks[2], 'findOne');
+    mockingoose(Task).toReturn(newTask, 'save');
+
+    const updatedTask = await task.updateTask({
+      id: '5f2bea6c3b0cf7001ca6b979',
+      taskUpdate: {
+        summary: 'New summary',
+        isCompleted: false
+      }
+    });
+
+    expect(updatedTask.summary).toBe('New summary');
+    expect(updatedTask.isCompleted).toBe(false);
+  });
+
+  it('should throw error for invalid payload', async () => {
+    const newTask = {
+      ...mockedTasks[2],
+      summary: 'New summary'
+    };
+    mockingoose(Task).toReturn(mockedTasks[2], 'findOne');
+    mockingoose(Task).toReturn(newTask, 'save');
+
+    let errorMessage = 'errorMessage';
+
+    try {
+      await task.updateTask({
+        id: '5f2bea6c3b0cf7001ca6b979',
+        taskUpdate: {
+          summary: 'New summary'
+        }
+      });
+    } catch (error) {
+      errorMessage = error.message;
+    }
+
+    expect(errorMessage).toBe(
+      'Task validation failed: isCompleted: Path `isCompleted` is required.'
+    );
   });
 });

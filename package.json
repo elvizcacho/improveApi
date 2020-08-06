@@ -10,7 +10,8 @@
     "start": "nodemon index.js --ignore '*.test.js'",
     "prettier": "prettier --write './src/**/*.{ts,js}'",
     "lint": "eslint 'src/**/*.js'",
-    "test": "jest"
+    "test": "jest",
+    "test:coverage": "jest --ci --reporters=default --reporters=jest-junit --coverage"
   },
   "keywords": [],
   "author": "",
@@ -32,6 +33,7 @@
     "eslint-plugin-prettier": "^3.1.0",
     "husky": "^4.2.5",
     "jest": "^26.2.2",
+    "jest-junit": "^11.1.0",
     "lint-staged": "^10.2.11",
     "mockingoose": "^2.13.2",
     "nodemon": "^1.19.1",
@@ -48,5 +50,15 @@
       "npm run prettier",
       "npm run lint"
     ]
+  },
+  "jest-junit": {
+    "suiteName": "jest tests",
+    "outputDirectory": ".",
+    "outputName": "artifacts/test-results.xml",
+    "uniqueOutputName": "false",
+    "classNameTemplate": "{classname}-{title}",
+    "titleTemplate": "{classname}-{title}",
+    "ancestorSeparator": " › ",
+    "usePathForSuiteName": "true"
   }
 }

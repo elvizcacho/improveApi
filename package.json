@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "nodemon index.js",
-    "prettier": "prettier --write './src/**/*.{ts,js}'"
+    "prettier": "prettier --write './src/**/*.{ts,js}'",
+    "lint": "eslint 'src/**/*.js'"
   },
   "keywords": [],
   "author": "",
@@ -41,6 +42,7 @@
   },
   "lint-staged": {
     "*.{gql,graphql,js,jsx,ts,tsx}": [
+      "npm run lint",
       "npm run prettier"
     ]
   }

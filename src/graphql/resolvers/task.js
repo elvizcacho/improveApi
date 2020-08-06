@@ -7,8 +7,7 @@ const formatTask = task => {
     summary: task.summary,
     isCompleted: task.isCompleted,
     createdAt: task.createdAt.toISOString(),
-    updatedAt: task.updatedAt.toISOString(),
-    asd: 'asd'
+    updatedAt: task.updatedAt.toISOString()
   };
 };
 
